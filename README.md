@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔗 LinksHub
 
-## Getting Started
+**O que é:** Um agregador de links pessoais (tipo Linktree) onde você centraliza suas redes sociais e portfólio.
+**Status:** 🟢 Online (Produção)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 1. Tecnologias Utilizadas ("Stack")
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Linguagem:** TypeScript (JavaScript com tipagem, mais seguro).
+- **Frontend (Visual):** React (Biblioteca) + Next.js (Framework App Router).
+- **Estilização:** Tailwind CSS (Estilos direto no HTML) + Lucide React (Ícones).
+- **Backend (Dados):** Supabase (Banco de dados PostgreSQL na nuvem).
+- **Autenticação:** Supabase Auth (Email/Senha).
+- **Deploy (Hospedagem):** Vercel (Frontend) + GitHub (Controle de versão).
+- **IDE (Ferramenta):** Cursor (Editor com IA).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 2. O Fluxo de Dados (Arquitetura)
 
-## Learn More
+1.  **Acesso:** O Usuário acessa `https://links-hub-six.vercel.app/`.
+2.  **Requisição:** O Next.js (no servidor da Vercel) percebe que precisa de dados.
+3.  **Conexão:** Ele usa as Chaves de API (Variáveis de Ambiente) para conectar ao Supabase.
+4.  **Banco de Dados:** O Supabase consulta a tabela `links` no banco PostgreSQL e devolve um JSON.
+5.  **Renderização:** O Next.js mistura esses dados com o HTML/CSS e entrega a página pronta.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 3. Novas Funcionalidades (Painel Admin) 🚀
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Recentemente implementamos um sistema completo de gestão de conteúdo:
 
-## Deploy on Vercel
+### 🔐 Área Administrativa (`/admin`)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Proteção de Rota:** Apenas usuários logados podem acessar.
+- **CRUD Completo:**
+  - **Create (Criar):** Formulário para adicionar novos links em tempo real.
+  - **Read (Ler):** Visualização da lista atual vinda do banco.
+  - **Delete (Deletar):** Botão para remover links indesejados.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🛡️ Segurança e Autenticação
+
+- **Login:** Tela de login personalizada integrada ao Supabase Auth.
+- **RLS (Row Level Security):** Políticas de segurança no banco de dados que garantem que:
+  - _Qualquer pessoa_ pode LER os links (Público).
+  - _Apenas o admin_ pode CRIAR ou DELETAR links (Privado).
+
+---
+
+## 4. Conceitos de DevOps Aplicados
+
+- ✅ **Ambiente Local vs. Produção**
+- ✅ **Controle de Versão (Git)**
+- ✅ **CI/CD (Integração Contínua via Vercel)**
+- ✅ **Gerenciamento de Segredos (.env.local)**
+- ✅ **Pipeline de Deploy Automatizado**
