@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
-import { Trash2 } from "lucide-react";
+import { Trash2, LogOut } from "lucide-react";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -14,6 +15,7 @@ interface LinkType {
   title: string;
   url: string;
   icon?: string;
+  clicks: number; // campo de cliques adicionado
 }
 
 export default function AdminPage() {
@@ -22,6 +24,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [links, setLinks] = useState<LinkType[]>([]);
   const [deleteLoadingId, setDeleteLoadingId] = useState<number | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     fetchLinks();
@@ -83,10 +86,27 @@ export default function AdminPage() {
     }
   }
 
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Painel de Gestão de Links</h1>
+        {/* Header com título e botão de Sair */}
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold">Painel de Gestão de Links</h1>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 px-3 py-1 rounded-md bg-gray-700 hover:bg-red-700 transition text-sm font-medium text-gray-200 hover:text-white"
+            title="Sair"
+            type="button"
+          >
+            <LogOut className="w-4 h-4" />
+            Sair
+          </button>
+        </div>
 
         {/* Formulário de Adição */}
         <form
@@ -132,7 +152,12 @@ export default function AdminPage() {
               )}
               {links.map(link => (
                 <li key={link.id} className="flex items-center gap-4 border-b border-gray-700 pb-2">
-                  <span className="font-medium">{link.title}</span>
+                  <span className="font-medium flex items-center gap-2">
+                    {link.title}
+                    <span className="text-sm text-gray-400">
+                      {(link.clicks ?? 0)} cliques
+                    </span>
+                  </span>
                   <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline break-all">
                     {link.url}
                   </a>
