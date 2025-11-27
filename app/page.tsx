@@ -27,9 +27,9 @@ export default function Home() {
         <div className="w-24 h-24 rounded-full bg-gray-700 flex items-center justify-center mb-4">
           {/* Ícone de usuário como placeholder */}
           <img
-            src="/perfil.png"
+            src="/foto.png"
             alt="Foto de perfil"
-            className="w-12 h-12 rounded-full object-cover border border-gray-500"
+            className="w-22 h-22 rounded-full object-cover border border-gray-500"
           />
         </div>
         {/* Nome de usuário */}
