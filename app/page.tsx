@@ -1,24 +1,23 @@
-import { Github, Linkedin, Instagram } from "lucide-react";
+import { Github, Linkedin, Instagram, Link } from "lucide-react";
+import { createClient } from "@supabase/supabase-js";
 
-export default function Home() {
-  // Array de links com nome, url e ícone
-  const links = [
-    {
-      name: "Meu Portfolio",
-      url: "https://github.com/asleymatos",
-      icon: Github,
-    },
-    {
-      name: "LinkedIn",
-      url: "https://www.linkedin.com/in/asleymatos/",
-      icon: Linkedin,
-    },
-    {
-      name: "Instagram",
-      url: "https://instagram.com/asleymatos",
-      icon: Instagram,
-    },
-  ];
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+const iconLookup: Record<string, React.ElementType> = {
+  Github: Github,
+  Linkedin: Linkedin,
+  Instagram: Instagram,
+};
+
+export default async function Home() {
+  // Busca os dados do banco
+  const { data: links, error } = await supabase.from("links").select("*");
+
+  // Fallback caso não haja dados ou erro
+  const safeLinks = Array.isArray(links) ? links : [];
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
@@ -36,18 +35,18 @@ export default function Home() {
         <div className="text-white font-bold text-xl mb-6">Asley Matos</div>
         {/* Lista de links */}
         <div className="w-60 flex flex-col gap-4">
-          {links.map((link, idx) => {
-            const Icon = link.icon;
+          {safeLinks.map((link, idx) => {
+            const Icon = iconLookup[link.icon] || Link;
             return (
               <a
-                key={link.name}
+                key={link.id || link.title || idx}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-medium transition flex items-center justify-start gap-3 pl-4"
               >
                 <Icon className="w-5 h-5 text-gray-400" />
-                {link.name}
+                {link.title}
               </a>
             );
           })}
@@ -56,4 +55,3 @@ export default function Home() {
     </div>
   );
 }
-
