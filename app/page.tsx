@@ -65,7 +65,12 @@ export default function Home() {
         </div>
         
         {/* Nome de usuário */}
-        <div className="text-white font-bold text-xl mb-6">Asley Matos</div>
+        <div className="text-white font-bold text-xl mb-1">Asley Matos</div>
+        <div className="text-gray-300 text-sm mb-6 text-center">
+          Tech Lead | SQL | Power BI | Python | 
+        <div className="text-gray-300 text-sm mb-6 text-center">
+          Análise de Dados | React | Next.JS
+        </div></div>
         
         {/* Lista de links */}
         <div className="w-60 flex flex-col gap-4">
